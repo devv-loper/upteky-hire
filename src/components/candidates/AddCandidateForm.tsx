@@ -67,17 +67,30 @@ export function AddCandidateForm({ onSuccess, initialData }: AddCandidateFormPro
       .map((s) => s.trim())
       .filter(Boolean);
 
-    const candidateData = {
-      ...data,
-      skills,
+    const candidateData: Omit<Candidate, 'id'> = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      college: data.college,
+      degree: data.degree,
       graduationYear: Number(data.graduationYear),
+      skills,
+      status: data.status,
+      experience: data.experience,
+      location: data.location,
+      linkedIn: data.linkedIn || undefined,
+      github: data.github || undefined,
+      portfolio: data.portfolio || undefined,
+      gpa: data.gpa || undefined,
+      notes: data.notes || undefined,
+      appliedDate: initialData?.appliedDate ?? new Date().toISOString().split('T')[0],
     };
 
     if (isEditing && initialData) {
       updateCandidate(initialData.id, candidateData);
       toast.success('Candidate updated successfully!');
     } else {
-      addCandidate(candidateData as Omit<Candidate, 'id'>);
+      addCandidate(candidateData);
       toast.success('Candidate added successfully!');
     }
 
